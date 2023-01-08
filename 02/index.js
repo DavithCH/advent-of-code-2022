@@ -55,4 +55,33 @@ fs.readFile("./strategy.txt", "utf8", (err, data) => {
   }
 
   totalScore();
+
+  const possibleSolutions = {
+    A: {
+      X: moveShape.scissors,
+      Y: moveShape.rock,
+      Z: moveShape.paper,
+    },
+    B: {
+      X: moveShape.rock,
+      Y: moveShape.paper,
+      Z: moveShape.scissors,
+    },
+    C: {
+      X: moveShape.paper,
+      Y: moveShape.scissors,
+      Z: moveShape.rock,
+    },
+  };
+
+  function part2() {
+    const result = rounds.map((round) => {
+      const opponentMove = opponentInput[round[0]];
+      const ourMove = possibleSolutions[round[0]][round[1]];
+      return score(opponentMove, ourMove);
+    });
+    console.log(result.reduce((a, b) => a + b, 0));
+  }
+
+  part2();
 });
