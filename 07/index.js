@@ -115,4 +115,34 @@ fs.readFile("./list.txt", "utf8", (err, data) => {
   }
 
   part1();
+
+  function part2() {
+    const totalDiskSpace = 70000000;
+    const requiredSpace = 30000000;
+
+    const tree = createTree(lines);
+
+    const usedSpace = getSize(tree);
+    const availableSpace = totalDiskSpace - usedSpace;
+    if (availableSpace > requiredSpace) {
+      throw new Error("There is already enough space");
+    }
+    const minimumFolderSize = requiredSpace - availableSpace;
+
+    const candidates = [];
+
+    getSize(tree, (name, size) => {
+      if (size >= minimumFolderSize) {
+        candidates.push({
+          name,
+          size,
+        });
+      }
+    });
+
+    candidates.sort((a, b) => a.size - b.size);
+
+    console.log(candidates[0].size);
+  }
+  part2();
 });
