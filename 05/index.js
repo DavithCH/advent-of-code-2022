@@ -63,4 +63,27 @@ fs.readFile("./list.txt", "utf8", (err, data) => {
   }
 
   findCrateOnTopofEachStacks();
+
+  function playMoveTwo(stacks, move) {
+    const crates = stacks[move.from].splice(-move.count, move.count);
+    stacks[move.to] = stacks[move.to].concat(crates);
+  }
+
+  function part2() {
+    const localStacks = JSON.parse(JSON.stringify(stacks));
+    for (const move of moves) {
+      playMoveTwo(localStacks, move);
+    }
+
+    const result = indexes
+      .map((value) => {
+        const stack = localStacks[value];
+        return stack[stack.length - 1];
+      })
+      .join("");
+
+    console.log(result);
+  }
+
+  part2();
 });
