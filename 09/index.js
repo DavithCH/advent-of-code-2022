@@ -86,4 +86,28 @@ fs.readFile("./list.txt", "utf8", (err, data) => {
   }
 
   partOne();
+
+  function partTwo() {
+    const knots = new Array(10).fill(0).map((_) => new Point(0, 0));
+    const visited = new Set();
+    markVisited(0, 0, visited);
+
+    for (const line of lines) {
+      for (let i = 0; i < line.totalMoves; i++) {
+        // Move the head according to the instructions
+        knots[0].move(line.direction);
+        // Move the rest of the rope
+        for (let knot = 1; knot < knots.length; knot++) {
+          const point = knots[knot];
+          point.follow(knots[knot - 1]);
+        }
+        const tail = knots[knots.length - 1];
+        markVisited(tail.x, tail.y, visited);
+      }
+    }
+
+    console.log(visited.size);
+  }
+
+  partTwo();
 });
